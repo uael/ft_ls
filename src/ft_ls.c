@@ -20,7 +20,7 @@ uint8_t	ls_usage(t_ls_ctx *ctx, char opt)
 	ft_putchar('\n');
 	ft_putstr("usage: ");
 	ft_putstr(ctx->prg);
-	ft_putstr(" [-Ralrt] [file ...]");
+	ft_putendl(" [-Ralrt] [file ...]");
 	return (1);
 }
 
@@ -29,12 +29,13 @@ uint8_t	ls_parse_opts(t_ls_ctx *ctx, int ac, char **av)
 	int		i;
 	char	*arg;
 
-	i = -1;
+	i = 0;
 	while (++i < ac && (arg = av[i]))
 		if (*arg != '-' && !ft_vstr_pushc(&ctx->files, arg))
 			return (1);
 		else if (*arg == '-')
-			while (++*arg)
+		{
+			while (*++arg)
 				if (*arg == 'a')
 					ctx->opts |= FT_LS_DOTS;
 				else if (*arg == 'l')
@@ -47,6 +48,7 @@ uint8_t	ls_parse_opts(t_ls_ctx *ctx, int ac, char **av)
 					ctx->opts = FT_LS_ASCT;
 				else if (*arg)
 					return (ls_usage(ctx, *arg));
+		}
 	return (0);
 }
 
