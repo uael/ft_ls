@@ -74,9 +74,9 @@ function donorm {
 function dotest {
   local test=$1
   local test_out="./out/$(basename "${test%.*}").out"
-  local test_expected="./test/$(basename "${test%.*}").expected"
+  local test_expected="./test/$(basename "${test%.*}").ex"
   if [ ! -f ${test_expected} ]; then
-    test_expected="./out/$(basename "${test%.*}").expected"
+    test_expected="./out/$(basename "${test%.*}").ex"
     ls $(cat ${test}) > ${test_expected}
   fi
   ./${PROJECT_PATH}/ft_ls $(cat ${test}) > ${test_out}
