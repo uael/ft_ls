@@ -14,6 +14,7 @@
 # define FT_LS_H
 
 # include <libft.h>
+# include <dirent.h>
 
 typedef enum	e_ls_opts
 {
@@ -29,6 +30,7 @@ typedef	struct	s_ls_ctx
 	char		*prg;
 	uint8_t		opts;
 	t_vstr		files;
+	t_vstr		dirs;
 }				t_ls_ctx;
 
 #endif

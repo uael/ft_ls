@@ -24,6 +24,14 @@ uint8_t	ls_usage(t_ls_ctx *ctx, char opt)
 	return (1);
 }
 
+void	ls_nodir(t_ls_ctx *ctx, char *dir)
+{
+	ft_putstr(ctx->prg);
+	ft_putstr(": ");
+	ft_putstr(dir);
+	ft_putendl(": No such file or directory");
+}
+
 uint8_t	ls_parse_opts(t_ls_ctx *ctx, int ac, char **av)
 {
 	int		i;
@@ -54,7 +62,8 @@ uint8_t	ls_parse_opts(t_ls_ctx *ctx, int ac, char **av)
 
 int		main(int ac, char **av)
 {
-	t_ls_ctx ctx;
+	t_ls_ctx	ctx;
+	char		**file;
 
 	FT_INIT(&ctx, t_ls_ctx);
 	if ((ctx.prg = ft_strrchr(av[0], '/')))
@@ -63,5 +72,11 @@ int		main(int ac, char **av)
 		ctx.prg = av[0];
 	if (ls_parse_opts(&ctx, ac, av))
 		return (EXIT_FAILURE);
+	if (!ft_vstr_size(&ctx.files) && !ft_vstr_pushc(&ctx.files, "."))
+		return (EXIT_FAILURE);
+	file = ft_vstr_begin(&ctx.files) - 1;
+	while (++file != ft_vstr_end(&ctx.files))
+		if (!opendir(*file))
+			ls_nodir(&ctx, *file);
 	return (EXIT_SUCCESS);
 }
