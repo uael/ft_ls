@@ -45,6 +45,9 @@ fclean: clean
 	make -C $(LFT_PATH) fclean
 	rm -f $(NAME)
 
+check:
+	@./test.sh
+
 re: fclean all
 
 .PHONY: all, $(NAME), clean, fclean, re
