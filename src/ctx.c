@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/17 13:03:06 by null             ###   ########.fr       */
+/*   Updated: 2017/11/17 18:14:22 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,38 @@ inline void		ls_dtor(t_ls_ctx *self)
 	ft_vec_dtor(&self->entries, (void (*)(void *))ls_ent_dtor);
 }
 
-uint8_t	ls_usage(t_ls_ctx *ctx, char opt)
+uint8_t			ls_usage(t_ls_ctx *ctx, char opt)
 {
-	ft_puts(2, ctx->prg);
-	ft_puts(2, ": illegal option -- ");
-	ft_putc(2, opt);
-	ft_puts(2, "\nusage: ");
-	ft_puts(2, ctx->prg);
-	ft_putl(2, " [-Ralrt] [file ...]");
+	ft_puts(1, ctx->prg);
+	ft_puts(1, ": illegal option -- ");
+	ft_putc(1, opt);
+	ft_puts(1, "\nusage: ");
+	ft_puts(1, ctx->prg);
+	ft_putl(1, " [-Ralrt] [file ...]");
 	return (EXIT_FAILURE);
 }
 
-uint8_t	ls_errno(t_ls_ctx *ctx, char *dir)
+uint8_t			ls_errno(t_ls_ctx *ctx, char *dir)
 {
-	ft_puts(2, ctx->prg);
-	ft_puts(2, ": cannot access '");
-	ft_puts(2, dir);
-	perror("'");
+	ft_puts(1, ctx->prg);
+	ft_puts(1, ": cannot access '");
+	ft_puts(1, dir);
+	ft_puts(1, "': ");
+	ft_putl(1, strerror(errno));
 	return (EXIT_FAILURE);
+}
+
+uint8_t			ls_process(t_ls_ctx *ctx)
+{
+	size_t		i;
+	t_ls_ent	*ent;
+
+	ls_ents_sort(ctx->entries.buf, ctx->entries.len, ctx->opts);
+	i = 0;
+	while (i < ctx->entries.len && (ent = ctx->entries.buf + i++))
+		if (S_ISDIR(ent->stat.st_mode))
+			ls_write_dir(ctx, ent);
+		else
+			ls_write_reg(ctx, ent);
+	return (0);
 }

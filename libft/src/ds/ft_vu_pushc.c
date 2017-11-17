@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/17 18:02:00 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ inline void	*ft_vec_pushc(t_vec *self, void *item)
 
 	if (!(it = ft_vec_push(self)))
 		return (NULL);
-	ft_memcpy(it, *(void **)item, self->isz);
+	ft_memcpy(it, item, self->isz);
 	return (it);
 }
