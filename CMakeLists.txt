@@ -15,8 +15,8 @@ set(CMAKE_C_FLAGS "")
 set(CMAKE_C_FLAGS_DEBUG "")
 set(CMAKE_C_FLAGS_RELEASE "")
 
-set(ft_ls_HDR ${ft_ls_INC_DIR}/ft_ls.h)
-file(GLOB_RECURSE ft_ls_HDRS ${ft_ls_HDRS} ${ft_ls_INC_DIR}/ft_ls/*.h)
+set(ft_ls_HDR ${ft_ls_INC_DIR}/ls.h)
+file(GLOB_RECURSE ft_ls_HDRS ${ft_ls_HDRS} ${ft_ls_INC_DIR}/ls/*.h)
 file(GLOB_RECURSE ft_ls_SRCS ${ft_ls_SRCS} ${ft_ls_SRC_DIR}/*.c)
 
 add_executable(ft_ls ${ft_ls_HDR} ${ft_ls_HDRS} ${ft_ls_SRCS})

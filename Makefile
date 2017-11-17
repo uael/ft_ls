@@ -6,7 +6,7 @@
 #    By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 09:52:36 by alucas-           #+#    #+#              #
-#    Updated: 2017/11/12 13:54:57 by alucas-          ###   ########.fr        #
+#    Updated: 2017/11/17 12:48:08 by null             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,17 +14,17 @@ NAME = ft_ls
 CC = gcc
 CC_FLAGS = -Wall -Werror -Wextra -I$(LFT_PATH)/include
 
-SRC_PATH = ./src/
-INC_PATH = ./include/ ./libft/
-OBJ_PATH = ./obj/
 LFT_PATH = ./libft/
+SRC_PATH = ./src/
+INC_PATH = ./include/ $(LFT_PATH)/include
+OBJ_PATH = ./obj/
 
 SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
-SRC_NAME = ft_ls.c
+SRC_NAME = cli.c ctx.c ent.c opt.c
 
 all: $(NAME)
 

@@ -79,7 +79,7 @@ function dotest {
     test_expected="./out/$(basename "${test%.*}").ex"
     ls $(cat ${test}) > ${test_expected}
   fi
-  ./${PROJECT_PATH}/ft_ls $(cat ${test}) > ${test_out}
+  ./${PROJECT_PATH}/ft_ls $(cat ${test}) > ${test_out} 2>&1
   diff ${test_out} ${test_expected}
 }
 

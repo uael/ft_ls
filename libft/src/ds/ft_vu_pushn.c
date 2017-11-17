@@ -43,3 +43,11 @@ inline uint64_t	*ft_vu64_pushn(t_vu64 *self, size_t n)
 	self->len += n;
 	return (ft_vu64_end(self));
 }
+
+inline void		*ft_vec_pushn(t_vec *self, size_t n)
+{
+	if (!n || !ft_vec_grow(self, n))
+		return (NULL);
+	self->len += n;
+	return (ft_vec_end(self));
+}

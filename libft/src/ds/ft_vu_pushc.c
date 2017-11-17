@@ -51,3 +51,13 @@ inline uint64_t	*ft_vu64_pushc(t_vu64 *self, uint64_t item)
 	*it = item;
 	return (it);
 }
+
+inline void	*ft_vec_pushc(t_vec *self, void *item)
+{
+	void *it;
+
+	if (!(it = ft_vec_push(self)))
+		return (NULL);
+	ft_memcpy(it, *(void **)item, self->isz);
+	return (it);
+}
