@@ -1,36 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   ft_vi_ctor.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/15 18:23:29 by null             ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "libft/ds/vec.h"
 
-# include <libft.h>
-# include <dirent.h>
-
-typedef enum	e_ls_opts
+inline void	ft_vi8_ctor(t_vi8 *self)
 {
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 2,
-	FT_LS_ASCT = 1 << 3
-}				t_ls_opts;
+	FT_INIT(self, t_vi8);
+}
 
-typedef	struct	s_ls_ctx
+inline void	ft_vi16_ctor(t_vi16 *self)
 {
-	char		*prg;
-	uint8_t		opts;
-	t_vstr		files;
-	t_vstr		dirs;
-}				t_ls_ctx;
+	FT_INIT(self, t_vi16);
+}
 
-#endif
+inline void	ft_vi32_ctor(t_vi32 *self)
+{
+	FT_INIT(self, t_vi16);
+}
+
+inline void	ft_vi64_ctor(t_vi64 *self)
+{
+	FT_INIT(self, t_vi64);
+}
+
+inline void	ft_vstr_ctor(t_vstr *self)
+{
+	FT_INIT(self, t_vstr);
+}

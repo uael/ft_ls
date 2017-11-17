@@ -1,36 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   ft_dstr_unshiftn.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/15 18:23:29 by null             ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "libft/ds/dstr.h"
 
-# include <libft.h>
-# include <dirent.h>
-
-typedef enum	e_ls_opts
+inline char	*ft_dstr_unshiftn(t_dstr *self, size_t n)
 {
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 2,
-	FT_LS_ASCT = 1 << 3
-}				t_ls_opts;
+	size_t	len;
+	char	*it;
 
-typedef	struct	s_ls_ctx
-{
-	char		*prg;
-	uint8_t		opts;
-	t_vstr		files;
-	t_vstr		dirs;
-}				t_ls_ctx;
-
-#endif
+	if (!n || !ft_dstr_grow(self, n))
+		return (NULL);
+	it = ft_dstr_begin(self);
+	if ((len = ft_dstr_size(self)))
+		ft_memmove(it + n, it, (len + 1) * sizeof(char));
+	else
+		it[n] = '\0';
+	self->len += n;
+	return (it);
+}

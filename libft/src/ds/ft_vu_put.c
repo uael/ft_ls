@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   ft_vu_put.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/15 18:23:29 by null             ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "libft/ds/vec.h"
 
-# include <libft.h>
-# include <dirent.h>
-
-typedef enum	e_ls_opts
+inline uint8_t	*ft_vu8_put(t_vu8 *self, size_t idx)
 {
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 2,
-	FT_LS_ASCT = 1 << 3
-}				t_ls_opts;
+	return (ft_vu8_putn(self, idx, 1));
+}
 
-typedef	struct	s_ls_ctx
+inline uint16_t	*ft_vu16_put(t_vu16 *self, size_t idx)
 {
-	char		*prg;
-	uint8_t		opts;
-	t_vstr		files;
-	t_vstr		dirs;
-}				t_ls_ctx;
+	return (ft_vu16_putn(self, idx, 1));
+}
 
-#endif
+inline uint32_t	*ft_vu32_put(t_vu32 *self, size_t idx)
+{
+	return (ft_vu32_putn(self, idx, 1));
+}
+
+inline uint64_t	*ft_vu64_put(t_vu64 *self, size_t idx)
+{
+	return (ft_vu64_putn(self, idx, 1));
+}

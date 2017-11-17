@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   ft_vi_unshift.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/15 18:23:29 by null             ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "libft/ds/vec.h"
 
-# include <libft.h>
-# include <dirent.h>
-
-typedef enum	e_ls_opts
+inline int8_t	*ft_vi8_unshift(t_vi8 *self)
 {
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 2,
-	FT_LS_ASCT = 1 << 3
-}				t_ls_opts;
+	return (ft_vi8_unshiftn(self, 1));
+}
 
-typedef	struct	s_ls_ctx
+inline int16_t	*ft_vi16_unshift(t_vi16 *self)
 {
-	char		*prg;
-	uint8_t		opts;
-	t_vstr		files;
-	t_vstr		dirs;
-}				t_ls_ctx;
+	return (ft_vi16_unshiftn(self, 1));
+}
 
-#endif
+inline int32_t	*ft_vi32_unshift(t_vi32 *self)
+{
+	return (ft_vi32_unshiftn(self, 1));
+}
+
+inline char		**ft_vstr_unshift(t_vstr *self)
+{
+	return (ft_vstr_unshiftn(self, 1));
+}

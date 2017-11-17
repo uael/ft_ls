@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   libft/mem.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#ifndef LIBFT_MEM_H
+# define LIBFT_MEM_H
 
-# include <libft.h>
-# include <dirent.h>
+# include "lib.h"
+# include "string.h"
 
-typedef enum	e_ls_opts
-{
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 2,
-	FT_LS_ASCT = 1 << 3
-}				t_ls_opts;
-
-typedef	struct	s_ls_ctx
-{
-	char		*prg;
-	uint8_t		opts;
-	t_vstr		files;
-	t_vstr		dirs;
-}				t_ls_ctx;
+extern void	*ft_calloc(size_t sz);
+extern void	*ft_malloc(size_t sz);
+extern void	*ft_realloc(void *ptr, size_t psz, size_t sz);
 
 #endif

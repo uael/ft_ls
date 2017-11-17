@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   libft/io.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,27 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#ifndef LIBFT_IO_H
+# define LIBFT_IO_H
 
-# include <libft.h>
-# include <dirent.h>
+# include <unistd.h>
+# include <fcntl.h>
 
-typedef enum	e_ls_opts
-{
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 2,
-	FT_LS_ASCT = 1 << 3
-}				t_ls_opts;
-
-typedef	struct	s_ls_ctx
-{
-	char		*prg;
-	uint8_t		opts;
-	t_vstr		files;
-	t_vstr		dirs;
-}				t_ls_ctx;
+extern void	ft_putchar(char c);
+extern void	ft_putchar_fd(char c, int fd);
+extern void	ft_putendl(char const *s);
+extern void	ft_putendl_fd(char const *s, int fd);
+extern void	ft_putnbr(int n);
+extern void	ft_putnbr_fd(int n, int fd);
+extern void	ft_putstr(char const *s);
+extern void	ft_putstr_fd(char const *s, int fd);
 
 #endif
