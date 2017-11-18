@@ -6,14 +6,11 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 19:29:09 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:35:18 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "print.h"
-
-# define MINOR(x) ((x) & 0xffffff)
-# define MAJOR(x) (((x) >> 24) & 0xff)
 
 inline uint8_t	ls_ent_ctor(t_ls_ent *self, char *path, t_bool root)
 {
@@ -37,13 +34,13 @@ inline void		ls_ent_dtor(t_ls_ent *self)
 	}
 }
 
-static void		ls_ent_printl(struct stat *s, uint8_t dty, uint8_t md)
+static void		ls_ent_printl(struct stat *s, uint8_t md)
 {
 	ls_print_dtype(s->st_mode);
 	ls_print_rights(s->st_mode);
 	(void)(ft_putc(1, ' ') & ft_putn(1, s->st_nlink, 10) & ft_putc(1, ' '));
 	ls_print_gps(s, getpwuid(s->st_uid), getgrgid(s->st_gid));
-	if (dty == DT_CHR || dty == DT_BLK)
+	if (S_ISCHR(s->st_mode) || S_ISBLK(s->st_mode))
 		(void)(ft_putn(1, (s->st_rdev >> 24) & 0xFF, 10) & ft_puts(1, ", ") &
 		ft_putn(1, s->st_rdev & 0xFFFFFF, 10));
 	else
@@ -55,9 +52,9 @@ static void		ls_ent_printl(struct stat *s, uint8_t dty, uint8_t md)
 static void		ls_ent_print1(t_ls_ent *self, uint8_t maxd, uint8_t opt)
 {
 	if (opt & FT_LS_LONG)
-		ls_ent_printl(&self->stat, self->dty, maxd);
+		ls_ent_printl(&self->stat, maxd);
 	ft_puts(1, ft_basename(self->path));
-	if (opt & FT_LS_LONG && self->dty == DT_LNK)
+	if (opt & FT_LS_LONG && S_ISLNK(self->stat.st_mode))
 		ls_print_linkto(self->path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 18:44:42 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 18:58:53 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct	s_ls_ent
 	char			*path;
 	DIR				*dir;
 	struct stat		stat;
-	uint8_t			dty;
 }				t_ls_ent;
 
 extern uint8_t	ls_ent_ctor(t_ls_ent *self, char *path, t_bool root);

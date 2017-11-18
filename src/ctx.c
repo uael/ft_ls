@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 19:00:39 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:10:08 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ static t_bool	ls_childs(t_ls_ctx *c, t_vec *v, t_ls_ent *ent, size_t i)
 			continue ;
 		if (ls_ent_ctor(&e, ft_pathjoin(ent->path, de->d_name), 0))
 			continue ;
-		e.dty = de->d_type;
 		if ((c->opt & FT_LS_RECU) && !ft_isdots(de->d_name) &&
 			S_ISDIR(e.stat.st_mode) && ++j)
 			ft_vec_putc(&c->ents, i, &e);
