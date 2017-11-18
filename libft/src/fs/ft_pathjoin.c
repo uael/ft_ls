@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vu_end.c                                        :+:      :+:    :+:   */
+/*   ft_pathjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/07 09:53:34 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/18 10:04:26 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/ds/vec.h"
+#include "libft/fs.h"
 
-inline uint8_t	*ft_vu8_end(t_vu8 *self)
+inline char	*ft_pathjoin(char const *p1, char const *p2)
 {
-	return (self->buf + self->len);
-}
+	size_t	l1;
+	size_t	l2;
+	t_bool	ds;
+	char	*r;
 
-inline uint16_t	*ft_vu16_end(t_vu16 *self)
-{
-	return (self->buf + self->len);
-}
-
-inline uint32_t	*ft_vu32_end(t_vu32 *self)
-{
-	return (self->buf + self->len);
-}
-
-inline uint64_t	*ft_vu64_end(t_vu64 *self)
-{
-	return (self->buf + self->len);
-}
-
-inline void		*ft_vec_end(t_vec *self)
-{
-	return ((char *)self->buf + (self->len * self->isz));
+	l1 = ft_strlen(p1);
+	if (!(l2 = ft_strlen(p2)) && !l1)
+		return (NULL);
+	ds = (t_bool)((!l1 || p1[l1 - 1] != '/') && (!l2 || p2[0] != '/'));
+	if (!(r = malloc((l1 + l2 + ds + 1) * sizeof(char))))
+		return (NULL);
+	if (l1)
+		ft_strcpy(r, p1);
+	if (ds)
+		ft_strcpy(r + l1, "/");
+	if (l2)
+		ft_strcpy(r + l1 + ds, p2);
+	return (r);
 }

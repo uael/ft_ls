@@ -48,6 +48,6 @@ inline void		*ft_vec_unshiftc(t_vec *self, void *item)
 
 	if (!(it = ft_vec_unshift(self)))
 		return (NULL);
-	ft_memcpy(it, *(void **)item, self->isz);
+	ft_memcpy(it, item, self->isz);
 	return (it);
 }

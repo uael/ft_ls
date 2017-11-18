@@ -6,7 +6,7 @@
 #    By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 09:52:36 by alucas-           #+#    #+#              #
-#    Updated: 2017/11/17 10:54:59 by null             ###   ########.fr        #
+#    Updated: 2017/11/18 09:54:36 by null             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS += -Wall -Werror -Wextra
 SRC_PATH = ./src/
 INC_PATH = ./include/
 OBJ_PATH = ./obj/
-OBJ_PATHS = cty ds int io lib math mem str
+OBJ_PATHS = cty ds fs int io lib math mem str
 
 OBJ_SUB_PATHS = $(addprefix $(OBJ_PATH),$(OBJ_PATHS))
 OBJ_NAME = $(SRC_NAME:.c=.o)
@@ -121,6 +121,9 @@ SRC_NAME += \
 	ds/ft_vu_unshiftc.c \
 	ds/ft_vu_unshiftn.c \
 	ds/ft_vu_unshiftnc.c \
+	fs/ft_basename.c \
+	fs/ft_isdots.c \
+	fs/ft_pathjoin.c \
 	int/ft_intlen.c \
 	int/ft_intstr.c \
 	io/ft_putc.c \

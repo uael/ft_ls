@@ -6,13 +6,13 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/17 18:14:22 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 11:43:54 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls/ctx.h"
 
-uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av)
+inline uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av)
 {
 	int		i;
 
@@ -28,10 +28,11 @@ uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av)
 
 inline void		ls_dtor(t_ls_ctx *self)
 {
+	ft_vstr_dtor(&self->paths, NULL);
 	ft_vec_dtor(&self->entries, (void (*)(void *))ls_ent_dtor);
 }
 
-uint8_t			ls_usage(t_ls_ctx *ctx, char opt)
+inline uint8_t	ls_usage(t_ls_ctx *ctx, char opt)
 {
 	ft_puts(1, ctx->prg);
 	ft_puts(1, ": illegal option -- ");
@@ -42,27 +43,55 @@ uint8_t			ls_usage(t_ls_ctx *ctx, char opt)
 	return (EXIT_FAILURE);
 }
 
-uint8_t			ls_errno(t_ls_ctx *ctx, char *dir)
+static void		ls_pdir(t_ls_ctx *ctx, t_vec *childs, t_ls_ent *ent, size_t i)
 {
-	ft_puts(1, ctx->prg);
-	ft_puts(1, ": cannot access '");
-	ft_puts(1, dir);
-	ft_puts(1, "': ");
-	ft_putl(1, strerror(errno));
-	return (EXIT_FAILURE);
+	t_ls_ent		child;
+	struct dirent	*de;
+
+	childs->len = 0;
+	while ((de = readdir(ent->dir)))
+	{
+		if (ft_isdots(de->d_name) && !(ctx->opts & FT_LS_DOTS))
+			continue ;
+		if (ls_ent_ctor(&child, ft_pathjoin(ent->path, de->d_name)))
+			continue ;
+		if ((ctx->opts & FT_LS_RECU) && !ft_isdots(de->d_name) &&
+			S_ISDIR(child.stat.st_mode))
+			ft_vec_putc(&ctx->entries, i, &child);
+		ft_vec_pushc(childs, &child);
+	}
+	closedir(ent->dir);
+	ent->dir = NULL;
+	ls_ents_sort(childs->buf, childs->len, ctx->opts);
+	if (ctx->has_errs || ctx->entries.len > 1 || (ctx->opts & FT_LS_RECU))
+		(void)(ft_puts(1, ent->path) & ft_putl(1, ":"));
+	ls_ents_write(childs->buf, childs->len, ctx->opts);
+	if (i < ctx->entries.len)
+		ft_putc(1, '\n');
 }
 
 uint8_t			ls_process(t_ls_ctx *ctx)
 {
 	size_t		i;
+	size_t		j;
 	t_ls_ent	*ent;
+	t_vec		childs;
 
+	ft_vec_ctor(&childs, sizeof(t_ls_ent));
 	ls_ents_sort(ctx->entries.buf, ctx->entries.len, ctx->opts);
 	i = 0;
-	while (i < ctx->entries.len && (ent = ctx->entries.buf + i++))
-		if (S_ISDIR(ent->stat.st_mode))
-			ls_write_dir(ctx, ent);
+	while (i < ctx->entries.len && (ent = (t_ls_ent *)ctx->entries.buf + i++))
+		if (!S_ISDIR(ent->stat.st_mode))
+			ls_ents_write(ent, 1, ctx->opts);
 		else
-			ls_write_reg(ctx, ent);
+		{
+			childs.len = 0;
+			ls_pdir(ctx, &childs, ent, i);
+			j = 0;
+			while (j < childs.len && (ent = (t_ls_ent *)childs.buf + j++))
+				if (!(ctx->opts & FT_LS_RECU) || !S_ISDIR(ent->stat.st_mode))
+					ls_ent_dtor(ent);
+		}
+	ft_vec_dtor(&childs, NULL);
 	return (0);
 }

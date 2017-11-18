@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   libft/fs.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/17 09:57:12 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 10:01:04 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef LIBFT_FS_H
+# define LIBFT_FS_H
 
-# include "libft/cty.h"
-# include "libft/ds.h"
-# include "libft/fs.h"
-# include "libft/int.h"
-# include "libft/io.h"
-# include "libft/lib.h"
-# include "libft/math.h"
-# include "libft/mem.h"
-# include "libft/str.h"
-# include "libft/tys.h"
+# include "io.h"
+
+extern char	const	*ft_basename(char const *path);
+extern t_bool		ft_isdots(char const *path);
+extern char			*ft_pathjoin(char const *p1, char const *p2);
 
 #endif

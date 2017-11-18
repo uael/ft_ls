@@ -58,6 +58,6 @@ inline void		*ft_vec_putc(t_vec *self, size_t idx, void *item)
 
 	if (!(it = ft_vec_put(self, idx)))
 		return (NULL);
-	ft_memcpy(it, *(void **)item, self->isz);
+	ft_memcpy(it, item, self->isz);
 	return (it);
 }
