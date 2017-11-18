@@ -6,18 +6,18 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 19:35:18 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:36:21 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "print.h"
+#include "ls.h"
 
-inline uint8_t	ls_ent_ctor(t_ls_ent *self, char *path, t_bool root)
+inline uint8_t	ls_ent_ctor(t_ls_ent *self, char *path, t_bool r)
 {
 	FT_INIT(self, t_ls_ent);
 	if (!path || lstat(path, &self->stat) < 0)
 		return (1);
-	else if (root && S_ISDIR(self->stat.st_mode) && !(self->dir = opendir(path)))
+	else if (r && S_ISDIR(self->stat.st_mode) && !(self->dir = opendir(path)))
 		return (1);
 	self->path = path;
 	return (0);

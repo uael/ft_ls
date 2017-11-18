@@ -6,11 +6,11 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 19:10:08 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:35:00 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ent.h"
+#include "ls.h"
 
 static uint8_t	ls_opt_parse(uint8_t *self, char *s, char *c)
 {

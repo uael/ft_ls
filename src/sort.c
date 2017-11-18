@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ent.h"
+#include "ls.h"
 
 static int	ls_ent_sort_alpha(t_ls_ent *a, t_ls_ent *b)
 {

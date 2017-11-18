@@ -6,11 +6,11 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 19:29:09 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:32:46 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "print.h"
+#include "ls.h"
 
 inline void		ls_print_dtype(mode_t mode)
 {
