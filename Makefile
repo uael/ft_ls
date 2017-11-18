@@ -6,7 +6,7 @@
 #    By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 09:52:36 by alucas-           #+#    #+#              #
-#    Updated: 2017/11/17 12:56:29 by null             ###   ########.fr        #
+#    Updated: 2017/11/18 19:59:34 by null             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,25 +15,38 @@ CC = gcc
 CC_FLAGS = -Wall -Werror -Wextra -I$(LFT_PATH)/include
 
 LFT_PATH = ./libft/
+LIB_PATH = ./lib/
 SRC_PATH = ./src/
 INC_PATH = ./include/ $(LFT_PATH)/include
 OBJ_PATH = ./obj/
 
-SRC = $(addprefix $(SRC_PATH),$(SRC_NAME))
-OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
+SRC = $(addprefix $(LIB_PATH),$(LIB_NAME))
+LIB = $(addprefix $(LIB_PATH),$(LIB_NAME))
+OBJ = $(addprefix $(OBJ_PATH),$(LIBLS_OBJ_NAME)) \
+	$(addprefix $(OBJ_PATH),$(LS_OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
 
-OBJ_NAME = $(SRC_NAME:.c=.o)
-SRC_NAME = cli.c ctx.c ent.c print.c sort.c
+LIBLS_OBJ_NAME = $(LIBLS_NAME:.c=.o)
+LIBLS_NAME = entry.c ls.c print.c sort.c
+
+LS_OBJ_NAME = $(LS_NAME:.c=.o)
+LS_NAME = cli.c
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+libls: $(OBJ)
 	make -C $(LFT_PATH)
-	$(CC) -o $(NAME) $(OBJ) -L$(LFT_PATH) -lft
+	ar -rc libls.a $?
+	ranlib libls.a
 
+$(NAME): libls
+	$(CC) -o $(NAME) $(OBJ) -L$(LFT_PATH) -L. -lft -lls
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@mkdir -p $(OBJ_PATH)
+	$(CC) $(CC_FLAGS) $(INC) -o $@ -c $<
+
+$(OBJ_PATH)%.o: $(LIB_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
 	$(CC) $(CC_FLAGS) $(INC) -o $@ -c $<
 
@@ -43,6 +56,7 @@ clean:
 
 fclean: clean
 	make -C $(LFT_PATH) fclean
+	rm -f libls.a
 	rm -f $(NAME)
 
 check:

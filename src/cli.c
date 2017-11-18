@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 12:35:27 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:45:44 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	main(int ac, char **av)
 {
-	t_ls_ctx ctx;
+	t_ls ls;
 
-	if (!ls_ctor(&ctx, ac, av))
-		ls_run(&ctx);
-	ls_dtor(&ctx);
+	if (!ls_ctor(&ls, ac, av))
+		ls_run(&ls);
+	ls_dtor(&ls);
 	return (EXIT_SUCCESS);
 }

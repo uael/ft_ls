@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 16:56:15 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:43:27 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,37 +22,37 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-typedef	struct	s_ls_ctx
+typedef	struct	s_ls
 {
 	uint8_t		opt;
-	t_vec		ents;
-	t_bool		has_errs;
-}				t_ls_ctx;
+	t_vec		entries;
+	t_bool		errs;
+}				t_ls;
 
-typedef enum	e_ls_opts
+typedef enum	e_ls_opt
 {
-	FT_LS_DOTS = 1 << 0,
-	FT_LS_LONG = 1 << 1,
-	FT_LS_RECU = 1 << 2,
-	FT_LS_REVE = 1 << 3,
-	FT_LS_ASCT = 1 << 4
-}				t_ls_opts;
+	LS_DOTS = 1 << 0,
+	LS_LONG = 1 << 1,
+	LS_RECU = 1 << 2,
+	LS_REVE = 1 << 3,
+	LS_ASCT = 1 << 4
+}				t_ls_opt;
 
-typedef struct	s_ls_ent
+typedef struct	s_ls_entry
 {
 	char			*path;
 	DIR				*dir;
 	struct stat		stat;
-}				t_ls_ent;
+}				t_ls_entry;
 
-extern uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av);
-extern void		ls_dtor(t_ls_ctx *self);
-extern void		ls_run(t_ls_ctx *c);
+extern uint8_t	ls_ctor(t_ls *self, int ac, char **av);
+extern void		ls_dtor(t_ls *self);
+extern void		ls_run(t_ls *self);
 
-extern uint8_t	ls_ent_ctor(t_ls_ent *self, char *path, t_bool root);
-extern void		ls_ent_dtor(t_ls_ent *self);
-extern void		ls_ent_sort(t_ls_ent *self, size_t n, uint8_t opt);
-extern void		ls_ent_print(t_ls_ent *self, size_t n, uint8_t opt);
+extern uint8_t	ls_entry_ctor(t_ls_entry *self, char *path, t_bool root);
+extern void		ls_entry_dtor(t_ls_entry *self);
+extern void		ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt);
+extern void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt);
 
 extern void		ls_print_dtype(mode_t mode);
 extern void		ls_print_rights(mode_t mode);
