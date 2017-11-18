@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/17 11:52:57 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 14:18:33 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ inline void		ft_vec_dtor(t_vec *self, void(*idtor)(void *i))
 	{
 		if (idtor)
 		{
-			item = ft_vec_begin(self);
-			while (item != ft_vec_end(self))
-				idtor(item += self->isz);
+			item = ft_vec_begin(self) - self->isz;
+			while ((item += self->isz) != ft_vec_end(self))
+				idtor(item);
 		}
 		free(self->buf);
 	}
