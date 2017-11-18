@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 14:19:57 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 14:20:51 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ extern void		ls_ent_sort(t_ls_ent *self, size_t n, uint8_t opt);
 extern void		ls_ent_write(t_ls_ent *self, size_t n, uint8_t opt);
 extern uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av);
 extern void		ls_dtor(t_ls_ctx *self);
-extern void		ls_run(t_ls_ctx *ctx);
+extern void		ls_run(t_ls_ctx *c);
 
 #endif
