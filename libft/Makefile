@@ -132,7 +132,8 @@ SRC_NAME += \
 	io/ft_puts.c \
 	lib/ft_atoi.c \
 	lib/ft_itoa.c \
-	math/pow2.c \
+	math/ft_pow.c \
+	math/ft_pow2_next.c \
 	mem/ft_calloc.c \
 	mem/ft_malloc.c \
 	mem/ft_realloc.c \

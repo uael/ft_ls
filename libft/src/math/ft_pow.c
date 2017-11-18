@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putc.c                                          :+:      :+:    :+:   */
+/*   ft_pow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/17 09:51:01 by null             ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/18 17:19:30 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/io.h"
+#include "libft/math.h"
 
-inline ssize_t	ft_putc(int fd, char c)
+inline uint64_t ft_pow(int64_t n, int16_t p)
 {
-	return (write(fd, (uint8_t *)(&c), sizeof(char)));
-}
+	uint64_t	r;
+	int64_t		t;
 
-inline ssize_t	ft_putr(int fd, char c, size_t n)
-{
-	char buf[(n * sizeof(char)) + 1];
-
-	ft_memset(buf, c, n);
-	buf[n] = '\0';
-	return (ft_puts(fd, buf));
+	r = 1;
+	t = n;
+	while (p)
+	{
+		if (p & 1)
+			r *= t;
+		t *= t;
+		p = p >> 1;
+	}
+	return (r);
 }

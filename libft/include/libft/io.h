@@ -24,5 +24,6 @@ extern ssize_t	ft_putl(int fd, char const *s);
 extern ssize_t	ft_putn(int fd, int64_t n, uint8_t base);
 extern ssize_t	ft_putu(int fd, uint64_t n, uint8_t base);
 extern ssize_t	ft_puts(int fd, char const *s);
+extern ssize_t	ft_putr(int fd, char c, size_t n);
 
 #endif

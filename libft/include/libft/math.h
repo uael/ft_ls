@@ -56,6 +56,7 @@
 # define F64CMP(a, b) ((int8_t)(((a) > (b)) - ((a) < (b))))
 # define ADDRCMP(a, b) ((int8_t)((&(a) > &(b)) - (&(a) < &(b))))
 
+extern uint64_t	ft_pow(int64_t n, int16_t p);
 extern uint8_t	pow2_next8(uint8_t n);
 extern uint16_t	pow2_next16(uint16_t n);
 extern uint32_t	pow2_next32(uint32_t n);

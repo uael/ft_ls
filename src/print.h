@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putc.c                                          :+:      :+:    :+:   */
+/*   print.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/07 09:52:33 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/17 09:51:01 by null             ###   ########.fr       */
+/*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/18 19:14:58 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/io.h"
+#ifndef LONG_H
+# define LONG_H
 
-inline ssize_t	ft_putc(int fd, char c)
-{
-	return (write(fd, (uint8_t *)(&c), sizeof(char)));
-}
+# include <pwd.h>
+# include <grp.h>
 
-inline ssize_t	ft_putr(int fd, char c, size_t n)
-{
-	char buf[(n * sizeof(char)) + 1];
+# include "ent.h"
 
-	ft_memset(buf, c, n);
-	buf[n] = '\0';
-	return (ft_puts(fd, buf));
-}
+extern void	ls_print_dtype(mode_t mode);
+extern void	ls_print_rights(mode_t mode);
+extern void	ls_print_gps(struct stat *s, struct passwd *u, struct group *g);
+extern void	ls_print_about(struct stat *stat);
+extern void	ls_print_linkto(char *p);
+
+#endif

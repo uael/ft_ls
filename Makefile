@@ -24,7 +24,7 @@ OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
-SRC_NAME = cli.c ctx.c ent.c sort.c
+SRC_NAME = cli.c ctx.c ent.c print.c sort.c
 
 all: $(NAME)
 

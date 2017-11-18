@@ -6,16 +6,16 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/18 14:23:39 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 19:00:39 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ls.h"
+#include "ent.h"
 
-static uint8_t	ls_opt_parse(uint8_t *self, char *s)
+static uint8_t	ls_opt_parse(uint8_t *self, char *s, char *c)
 {
 	while (*++s)
-		if (*s == 'a')
+		if ((*c = *s) == 'a')
 			*self |= FT_LS_DOTS;
 		else if (*s == 'l')
 			*self |= FT_LS_LONG;
@@ -34,9 +34,9 @@ inline uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av)
 {
 	int			i;
 	t_ls_ent	ent;
+	char		c;
 
-	i = 0;
-	FT_INIT(self, t_ls_ctx);
+	ft_memset(self, i = 0, sizeof(t_ls_ctx));
 	ft_vec_ctor(&self->ents, sizeof(t_ls_ent));
 	while (++i < ac)
 		if (*av[i] != '-' && ls_ent_ctor(&ent, av[i], 1))
@@ -48,9 +48,9 @@ inline uint8_t	ls_ctor(t_ls_ctx *self, int ac, char **av)
 			return (1);
 		else if (*av[i] != '-' && !ft_vec_pushc(&self->ents, &ent))
 			return (1);
-		else if (*av[i] == '-' && ls_opt_parse(&self->opt, av[i]))
+		else if (*av[i] == '-' && ls_opt_parse(&self->opt, av[i], &c))
 			return ((uint8_t)((ft_puts(1, ft_basename(av[0])) &
-			ft_puts(1, ": illegal option -- ") & ft_putc(1, *(av[i] + 1)) &
+			ft_puts(1, ": illegal option -- ") & ft_putc(1, c) &
 			ft_puts(1, "\nusage: ") & ft_puts(1, ft_basename(av[0])) &
 			ft_putl(1, " [-Ralrt] [file ...]")) > 0));
 	if (!ft_vec_size(&self->ents) && (ls_ent_ctor(&ent, ft_strdup("."), 1)
@@ -71,8 +71,7 @@ static t_bool	ls_childs(t_ls_ctx *c, t_vec *v, t_ls_ent *ent, size_t i)
 	size_t			j;
 
 	v->len = 0;
-	if (!ent->dir)
-		ent->dir = opendir(ent->path);
+	ent->dir = ent->dir ? ent->dir : opendir(ent->path);
 	j = 0;
 	while ((de = readdir(ent->dir)))
 	{
@@ -80,13 +79,13 @@ static t_bool	ls_childs(t_ls_ctx *c, t_vec *v, t_ls_ent *ent, size_t i)
 			continue ;
 		if (ls_ent_ctor(&e, ft_pathjoin(ent->path, de->d_name), 0))
 			continue ;
+		e.dty = de->d_type;
 		if ((c->opt & FT_LS_RECU) && !ft_isdots(de->d_name) &&
 			S_ISDIR(e.stat.st_mode) && ++j)
 			ft_vec_putc(&c->ents, i, &e);
 		ft_vec_pushc(v, &e);
 	}
-	closedir(ent->dir);
-	ent->dir = NULL;
+	(void)(closedir(ent->dir) & (size_t)(ent->dir = NULL));
 	(j ? ls_ent_sort((t_ls_ent *)c->ents.buf + i, j, c->opt) : (void)0);
 	return ((t_bool)(v->len > 0));
 }
@@ -103,7 +102,7 @@ inline void		ls_run(t_ls_ctx *c)
 	i = 0;
 	while (i < c->ents.len && (e = (t_ls_ent *)c->ents.buf + i++))
 		if (!S_ISDIR(e->stat.st_mode))
-			ls_ent_write(e, 1, c->opt);
+			ls_ent_print(e, 1, c->opt);
 		else
 		{
 			if (c->has_errs || c->ents.len > 1 || (c->opt & FT_LS_RECU))
@@ -111,8 +110,7 @@ inline void		ls_run(t_ls_ctx *c)
 			if (!ls_childs(c, &v, e, i) &&
 				(i < c->ents.len ? ft_putc(1, '\n') : 1))
 				continue ;
-			ls_ent_sort(v.buf, v.len, c->opt);
-			ls_ent_write(v.buf, v.len, c->opt);
+			ls_ent_print(v.buf, v.len, c->opt);
 			j = (i < c->ents.len ? (size_t)(ft_putc(1, '\n') & 0) : 0);
 			while (j < v.len && (e = (t_ls_ent *)v.buf + j++))
 				if (!(c->opt & FT_LS_RECU) || !S_ISDIR(e->stat.st_mode))
