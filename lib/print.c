@@ -50,6 +50,7 @@ inline void		ls_print_rights(mode_t mode)
 		ft_putc(1, (char)(mode & S_ISVTX ? 't' : 'x'));
 	else
 		ft_putc(1, (char)(mode & S_ISVTX ? 'T' : '-'));
+	ft_putc(1, ' ');
 }
 
 inline void		ls_print_gps(struct stat *s, struct passwd *u, struct group *g)

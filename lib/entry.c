@@ -23,8 +23,6 @@ inline uint8_t	ls_entry_ctor(t_ls_entry *self, char *path)
 
 inline void		ls_entry_dtor(t_ls_entry *self)
 {
-	if (self->dir)
-		(void)(closedir(self->dir) & (size_t)(self->dir = NULL));
 	if (self->path)
 	{
 		free(self->path);

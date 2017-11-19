@@ -33,7 +33,7 @@ inline uint8_t	ls_ctor(t_ls *self, int ac, char **av)
 	ft_vec_ctor(&self->entries, sizeof(t_ls_entry));
 	while (++i < ac)
 		if (*av[i] != '-' && ls_entry_ctor(&ent, av[i]))
-			ls_err(self->prg, av[i]);
+			self->errs += ls_err(self->prg, av[i]);
 		else if (*av[i] != '-' && !(ent.path = ft_strdup(ent.path)))
 			return (1);
 		else if (*av[i] != '-' && !ft_vec_pushc(&self->entries, &ent))
@@ -43,8 +43,9 @@ inline uint8_t	ls_ctor(t_ls *self, int ac, char **av)
 			ft_puts(1, ": illegal option -- ") & ft_putc(1, c) &
 			ft_puts(1, "\nusage: ") & ft_puts(1, ft_basename(av[0])) &
 			ft_putl(1, " [-Ralrt] [file ...]")) > 0));
-	if (!ft_vec_size(&self->entries) && (ls_entry_ctor(&ent, ft_strdup("."))
-		|| !ft_vec_pushc(&self->entries, &ent)))
+	if (!self->errs && !ft_vec_size(&self->entries) &&
+		(ls_entry_ctor(&ent, ft_strdup(".")) ||
+		!ft_vec_pushc(&self->entries, &ent)))
 		return (1);
 	return (0);
 }
@@ -96,7 +97,7 @@ inline void		ls_run(t_ls *self)
 			ls_entry_print(e, 1, self->opt);
 		else
 		{
-			if (self->errs || self->entries.len > 1 || (self->opt & LS_RECU))
+			if (self->errs || self->entries.len > 1)
 				(void)(ft_puts(1, e->path) & ft_putl(1, ":"));
 			if (!ls_childs(self, &v, e, i) &&
 				(i < self->entries.len ? ft_putc(1, '\n') : 1))
