@@ -62,10 +62,6 @@ function donorm {
     norm_file ${file} &
     pids="$pids $!"
   done
-  for file in ${PROJECT_PATH}/lib/*.c; do
-    norm_file ${file} &
-    pids="$pids $!"
-  done
   wait ${pids}
   out=$(cat ${NORM_OUT})
   if [[ ! -z ${out} ]]; then

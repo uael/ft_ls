@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,42 @@
 /* ************************************************************************** */
 
 #include "ls.h"
+
+inline uint8_t	ls_err(char const *prg, char const *arg, int err_no)
+{
+	ft_puts(2, prg);
+	ft_puts(2, ": ");
+	ft_puts(2, arg);
+	ft_puts(2, ": ");
+	ft_putl(2, strerror(err_no));
+	return (1);
+}
+
+inline uint8_t	ls_err_dump(t_ls *ls)
+{
+	size_t		i;
+	size_t		j;
+	t_ls_err	tmp;
+	t_ls_err	*errs;
+
+	errs = ls->errs.buf;
+	j = 0;
+	while (++j < ls->errs.len && (i = 0) == 0)
+		while (++i < ls->errs.len)
+			if (ft_strcmp(errs[i - 1].arg, errs[i].arg) > 0)
+			{
+				tmp = errs[i - 1];
+				errs[i - 1] = errs[i];
+				errs[i] = tmp;
+			}
+	i = 0;
+	while (i < ls->errs.len)
+	{
+		ls_err(ls->p, errs[i].arg, errs[i].err_no);
+		++i;
+	}
+	return (0);
+}
 
 inline float	ls_fmt_size(off_t sz, char *unit)
 {
@@ -24,6 +60,14 @@ inline float	ls_fmt_size(off_t sz, char *unit)
 	else
 		f /= 1024;
 	return (f);
+}
+
+inline uint8_t	ls_opt_error(t_ls *ls, char c)
+{
+	return ((uint8_t)((ft_puts(1, ls->p) &
+		ft_puts(2, ": illegal option -- ") & ft_putc(2, c) &
+		ft_puts(2, "\nusage: ") & ft_puts(2, ft_basename(ls->p)) &
+		ft_putl(2, " [-1Rahlrt] [file ...]")) > 0));
 }
 
 inline uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c)
@@ -46,45 +90,4 @@ inline uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c)
 		else if (*s)
 			return (1);
 	return (0);
-}
-
-static int64_t	ls_entry_strcmp(t_ls_entry *a, t_ls_entry *b)
-{
-	return (ft_strcmp(a->path, b->path));
-}
-
-static int64_t	ls_entry_timecmp(t_ls_entry *a, t_ls_entry *b, uint8_t opt)
-{
-	int64_t i;
-
-	(void)opt;
-	i = I64CMP(b->stat.st_mtime, a->stat.st_mtime);
-	return (i != 0 ? i : ls_entry_strcmp(a, b));
-}
-
-void			ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt)
-{
-	size_t		i;
-	size_t		j;
-	int64_t		c;
-	t_ls_entry	tmp;
-
-	j = 0;
-	while (++j < n && (i = 0) == 0)
-		while (++i < n)
-		{
-			if ((opt & LS_ASCT) &&
-				(c = ls_entry_timecmp(self + i - 1, self + i, opt)) == 0)
-				continue ;
-			if (!(opt & LS_ASCT) &&
-				(c = ls_entry_strcmp(self + i - 1, self + i)) == 0)
-				continue ;
-			if ((opt & LS_REVE) && c > 0)
-				continue ;
-			if (!(opt & LS_REVE) && c < 0)
-				continue ;
-			tmp = self[i - 1];
-			self[i - 1] = self[i];
-			self[i] = tmp;
-		}
 }

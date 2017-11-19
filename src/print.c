@@ -80,7 +80,9 @@ inline void		ls_print_about(struct stat *stat)
 	tstr = ctime(&mtime);
 	diff = now - mtime;
 	(void)(ft_putc(1, ' ') & write(1, &(tstr[4]), 6) & ft_putc(1, ' '));
-	if (diff < (-3600 * 24 * 30.5 * 6) || diff > (3600 * 24 * 30.5 * 6))
+	if (diff < 0)
+		(void)(ft_putc(1, ' ') & write(1, &(tstr[24]), 5));
+	else if (diff < (-3600 * 24 * 30.5 * 6) || diff > (3600 * 24 * 30.5 * 6))
 		(void)(ft_putc(1, ' ') & write(1, &(tstr[20]), 4));
 	else
 		write(1, &(tstr[11]), 5);

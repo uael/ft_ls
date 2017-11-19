@@ -20,6 +20,14 @@ inline uint8_t	ls_entry_ctor(t_ls_entry *self, char *path)
 	self->path = path;
 	self->usr = getpwuid(self->stat.st_uid);
 	self->grp = getgrgid(self->stat.st_gid);
+	if (S_ISLNK(self->stat.st_mode) &&
+		(self->lnl = readlink(self->path, self->ln, PATH_MAX)))
+	{
+		if (!(self->lns = malloc(sizeof(struct stat))))
+			return (1);
+		self->ln[self->lnl] = '\0';
+		lstat(self->ln, self->lns);
+	}
 	return (0);
 }
 
@@ -58,10 +66,9 @@ static uint8_t	ls_entry_strsize(t_ls_entry *self)
 	return (i);
 }
 
-static void		ls_ent_printone(t_ls_entry *self, uint8_t *pad, uint8_t opt)
+static void		ls_ent_dumpone(t_ls_entry *self, uint8_t *pad, uint8_t opt)
 {
 	char	cp[PATH_MAX];
-	ssize_t	sz;
 
 	if (opt & LS_LONG)
 	{
@@ -78,16 +85,15 @@ static void		ls_ent_printone(t_ls_entry *self, uint8_t *pad, uint8_t opt)
 		ls_print_about(&self->stat);
 	}
 	ft_puts(1, ft_basename(self->path));
-	if (opt & LS_LONG && S_ISLNK(self->stat.st_mode))
+	if (opt & LS_LONG && S_ISLNK(self->stat.st_mode) && self->lnl)
 	{
-		ft_strcpy(cp, self->path);
-		if ((sz = readlink(self->path, cp, PATH_MAX)) > 0)
-			(void)((cp[sz] = '\0') & ft_puts(1, " -> ") & ft_puts(1, cp));
+		ft_strcpy(cp, self->ln);
+		(void)((cp[self->lnl] = '\0') & ft_puts(1, " -> ") & ft_puts(1, cp));
 	}
 	ft_putc(1, (char)((opt & LS_LONG) || (opt & LS_LINE) ? '\n' : ' '));
 }
 
-inline void		ls_entry_print(t_ls_entry *ent, size_t n, uint8_t opt)
+inline void		ls_entry_dump(t_ls_entry *ent, size_t n, uint8_t opt, t_bool s)
 {
 	size_t		i;
 	uint8_t		p[4];
@@ -106,11 +112,11 @@ inline void		ls_entry_print(t_ls_entry *ent, size_t n, uint8_t opt)
 			p[3] = ft_u8max(p[3], (opt & LS_UNIT) ? ls_entry_strsize(ent + i++)
 				: ft_intlen((ent + i++)->stat.st_size, 10));
 		}
-	ls_entry_sort(ent, n, opt);
-	if ((opt & LS_LONG) != (i = 0) && n > 1)
+	ls_entry_sort(ent, n, opt, 0);
+	if ((opt & LS_LONG) != (i = 0) && s)
 		(void)(ft_puts(1, "total ") & ft_putu(1, t, 10) & ft_putc(1, '\n'));
 	while (i < n)
-		ls_ent_printone(ent + i++, (uint8_t *)p, opt);
+		ls_ent_dumpone(ent + i++, (uint8_t *)p, opt);
 	if (n && !(opt & LS_LONG) && !(opt & LS_LINE))
 		ft_putc(1, '\n');
 }
