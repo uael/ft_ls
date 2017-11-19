@@ -34,11 +34,12 @@ uint8_t			ls_entry_sort(t_ls_entry *ent, size_t n, uint8_t opt, t_bool r)
 	t_bool		s;
 
 	j = 0;
-	while (++j < n)
+	s = 0;
+	while (++j < n && !s)
 	{
 		i = 0;
 		s = 0;
-		while (++i < n && !s)
+		while (++i < n)
 			if (ls_entry_dtyswap(ent + i - 1, ent + i, opt, r))
 			{
 				tmp = ent[i - 1];
