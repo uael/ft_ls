@@ -60,10 +60,11 @@ inline void		ls_print_gps(t_ls_entry *self, uint8_t pad[2])
 	else
 		ft_padnl(1, self->stat.st_uid, 10, pad[0]);
 	ft_putc(1, ' ');
+	ft_putc(1, ' ');
 	if (self->grp)
 		ft_padr(1, self->grp->gr_name, pad[1]);
 	else
-		ft_putr(1, ' ', pad[1] * sizeof(char));
+		ft_padnl(1, self->stat.st_gid, 10, pad[1]);
 	ft_putc(1, ' ');
 }
 
@@ -84,14 +85,4 @@ inline void		ls_print_about(struct stat *stat)
 	else
 		write(1, &(tstr[11]), 5);
 	ft_putc(1, ' ');
-}
-
-inline void		ls_print_linkto(char *p)
-{
-	char	cp[PATH_MAX];
-	ssize_t	sz;
-
-	ft_strcpy(cp, p);
-	if ((sz = readlink(p, cp, PATH_MAX)) > 0)
-		(void)((cp[sz] = '\0') & ft_puts(1, " -> ") & ft_puts(1, cp));
 }

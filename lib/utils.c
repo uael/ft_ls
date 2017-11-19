@@ -12,6 +12,20 @@
 
 #include "ls.h"
 
+inline float	ls_fmt_size(off_t sz, char *unit)
+{
+	float f;
+
+	*unit = 'M';
+	if ((f = sz) < 1000)
+		*unit = 'B';
+	else if ((f /= 1024) < 1000)
+		*unit = 'K';
+	else
+		f /= 1024;
+	return (f);
+}
+
 inline uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c)
 {
 	while (*++s)
