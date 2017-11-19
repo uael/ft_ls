@@ -31,15 +31,21 @@ uint8_t			ls_entry_sort(t_ls_entry *ent, size_t n, uint8_t opt, t_bool r)
 	size_t		i;
 	size_t		j;
 	t_ls_entry	tmp;
+	t_bool		s;
 
 	j = 0;
-	while (++j < n && (i = 0) == 0)
-		while (++i < n)
+	while (++j < n)
+	{
+		i = 0;
+		s = 0;
+		while (++i < n && !s)
 			if (ls_entry_dtyswap(ent + i - 1, ent + i, opt, r))
 			{
 				tmp = ent[i - 1];
 				ent[i - 1] = ent[i];
 				ent[i] = tmp;
+				s = 1;
 			}
+	}
 	return (0);
 }
