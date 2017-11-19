@@ -53,15 +53,17 @@ inline void		ls_print_rights(mode_t mode)
 	ft_putc(1, ' ');
 }
 
-inline void		ls_print_gps(struct stat *s, struct passwd *u, struct group *g)
+inline void		ls_print_gps(t_ls_entry *self, uint8_t pad[2])
 {
-	if (u)
-		ft_puts(1, u->pw_name);
+	if (self->usr)
+		ft_padr(1, self->usr->pw_name, pad[0]);
 	else
-		ft_putn(1, s->st_uid, 10);
+		ft_padnl(1, self->stat.st_uid, 10, pad[0]);
 	ft_putc(1, ' ');
-	if (g)
-		ft_puts(1, g->gr_name);
+	if (self->grp)
+		ft_padr(1, self->grp->gr_name, pad[1]);
+	else
+		ft_putr(1, ' ', pad[1] * sizeof(char));
 	ft_putc(1, ' ');
 }
 
@@ -90,6 +92,6 @@ inline void		ls_print_linkto(char *p)
 	ssize_t	sz;
 
 	ft_strcpy(cp, p);
-	if ((sz = readlink(p, p, 1024)) > 0)
+	if ((sz = readlink(p, cp, PATH_MAX)) > 0)
 		(void)((cp[sz] = '\0') & ft_puts(1, " -> ") & ft_puts(1, cp));
 }

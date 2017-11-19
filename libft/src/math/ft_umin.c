@@ -1,22 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft/tys.h                                        :+:      :+:    :+:   */
+/*   ft_umin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 09:52:30 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/15 18:08:38 by null             ###   ########.fr       */
+/*   Updated: 2017/11/18 17:19:30 by null             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_TYS_H
-# define LIBFT_TYS_H
+#include "libft/math.h"
 
-# include <stdint.h>
-# include <stddef.h>
-# include <sys/types.h>
+inline uint8_t	ft_u8min(uint8_t a, uint8_t b)
+{
+	return (MIN(a, b));
+}
 
-typedef uint8_t	t_bool;
+inline uint16_t	ft_u16min(uint16_t a, uint16_t b)
+{
+	return (MIN(a, b));
+}
 
-#endif
+inline uint32_t	ft_u32min(uint32_t a, uint32_t b)
+{
+	return (MIN(a, b));
+}
+
+inline uint64_t	ft_u64min(uint64_t a, uint64_t b)
+{
+	return (MIN(a, b));
+}
+
+inline size_t	ft_umin(size_t a, size_t b)
+{
+	return (MIN(a, b));
+}

@@ -126,14 +126,19 @@ SRC_NAME += \
 	fs/ft_pathjoin.c \
 	int/ft_intlen.c \
 	int/ft_intstr.c \
+	io/ft_padn.c \
 	io/ft_putc.c \
 	io/ft_putl.c \
 	io/ft_putn.c \
 	io/ft_puts.c \
 	lib/ft_atoi.c \
 	lib/ft_itoa.c \
+	math/ft_imax.c \
+	math/ft_imin.c \
 	math/ft_pow.c \
 	math/ft_pow2_next.c \
+	math/ft_umax.c \
+	math/ft_umin.c \
 	mem/ft_calloc.c \
 	mem/ft_malloc.c \
 	mem/ft_realloc.c \

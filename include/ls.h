@@ -46,6 +46,8 @@ typedef struct	s_ls_entry
 	char			*path;
 	DIR				*dir;
 	struct stat		stat;
+	struct passwd	*usr;
+	struct group	*grp;
 }				t_ls_entry;
 
 extern uint8_t	ls_ctor(t_ls *self, int ac, char **av);
@@ -61,7 +63,7 @@ extern void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt);
 
 extern void		ls_print_dtype(mode_t mode);
 extern void		ls_print_rights(mode_t mode);
-extern void		ls_print_gps(struct stat *s, struct passwd *u, struct group *g);
+extern void		ls_print_gps(t_ls_entry *self, uint8_t pad[2]);
 extern void		ls_print_about(struct stat *stat);
 extern void		ls_print_linkto(char *p);
 
