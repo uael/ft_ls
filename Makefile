@@ -12,7 +12,7 @@
 
 NAME = ft_ls
 CC = gcc
-CC_FLAGS = -Wall -Werror -Wextra -I$(LFT_PATH)/include
+CC_FLAGS = -Wall -Werror -Wextra -I$(LFT_PATH)/include -O2
 
 LFT_PATH = ./libft/
 SRC_PATH = ./src/

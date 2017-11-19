@@ -56,13 +56,13 @@ inline void		ls_print_rights(mode_t mode)
 inline void		ls_print_gps(t_ls_entry *self, uint8_t pad[2])
 {
 	if (self->usr)
-		ft_padr(1, self->usr->pw_name, pad[0]);
+		ft_padl(1, self->usr->pw_name, pad[0]);
 	else
 		ft_padnl(1, self->stat.st_uid, 10, pad[0]);
 	ft_putc(1, ' ');
 	ft_putc(1, ' ');
 	if (self->grp)
-		ft_padr(1, self->grp->gr_name, pad[1]);
+		ft_padl(1, self->grp->gr_name, pad[1]);
 	else
 		ft_padnl(1, self->stat.st_gid, 10, pad[1]);
 	ft_putc(1, ' ');

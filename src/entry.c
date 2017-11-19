@@ -38,9 +38,14 @@ inline void		ls_entry_dtor(t_ls_entry *self)
 		free(self->path);
 		self->path = NULL;
 	}
+	if (self->lns)
+	{
+		free(self->lns);
+		self->lns = NULL;
+	}
 }
 
-static uint8_t	ls_entry_strsize(t_ls_entry *self)
+static uint8_t	ls_entry_strsize(t_ls_entry *self, uint8_t opt)
 {
 	char	unit;
 	uint8_t	i;
@@ -52,7 +57,7 @@ static uint8_t	ls_entry_strsize(t_ls_entry *self)
 		i += ((int64_t)ft_strcpy(self->strsz + i, ", ") & 0) + 2;
 		i += ft_intstr(self->strsz + i, self->stat.st_rdev & 0xFFFFFF, 10);
 	}
-	else
+	else if (opt & LS_UNIT)
 	{
 		f = ls_fmt_size(self->stat.st_size, &unit);
 		if (f < 10)
@@ -62,6 +67,8 @@ static uint8_t	ls_entry_strsize(t_ls_entry *self)
 				(int64_t)f + (f - (int64_t)f >= 0.5 ? 1 : 0), 10);
 		self->strsz[i++] = unit;
 	}
+	else
+		i = ft_intstr(self->strsz, self->stat.st_size, 10);
 	self->strsz[i] = '\0';
 	return (i);
 }
@@ -78,10 +85,7 @@ static void		ls_ent_dumpone(t_ls_entry *self, uint8_t *pad, uint8_t opt)
 			& ft_putc(1, ' '));
 		ls_print_gps(self, pad + 1);
 		ft_putc(1, ' ');
-		if (opt & LS_UNIT)
-			ft_padr(1, self->strsz, pad[3] + 1);
-		else
-			ft_padnr(1, self->stat.st_size, 10, pad[3]);
+		ft_padr(1, self->strsz, pad[3] + ((opt & LS_UNIT) ? 1 : 0));
 		ls_print_about(&self->stat);
 	}
 	ft_puts(1, ft_basename(self->path));
@@ -109,8 +113,7 @@ inline void		ls_entry_dump(t_ls_entry *ent, size_t n, uint8_t opt, t_bool s)
 				(ent + i)->usr->pw_name) : ft_intlen(ent->stat.st_uid, 10));
 			p[2] = ft_u8max(p[1], (ent + i)->grp ? (uint8_t)ft_strlen(
 				(ent + i)->grp->gr_name) : ft_intlen(ent->stat.st_gid, 10));
-			p[3] = ft_u8max(p[3], (opt & LS_UNIT) ? ls_entry_strsize(ent + i++)
-				: ft_intlen((ent + i++)->stat.st_size, 10));
+			p[3] = ft_u8max(p[3], ls_entry_strsize(ent + i++, opt));
 		}
 	ls_entry_sort(ent, n, opt, 0);
 	if ((opt & LS_LONG) != (i = 0) && s)
