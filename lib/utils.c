@@ -12,12 +12,30 @@
 
 #include "ls.h"
 
-static int	ls_entry_strcmp(t_ls_entry *a, t_ls_entry *b)
+inline uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c)
+{
+	while (*++s)
+		if ((*c = *s) == 'a')
+			*opt |= LS_DOTS;
+		else if (*s == 'l')
+			*opt |= LS_LONG;
+		else if (*s == 'R')
+			*opt |= LS_RECU;
+		else if (*s == 'r')
+			*opt |= LS_REVE;
+		else if (*s == 't')
+			*opt |= LS_ASCT;
+		else if (*s)
+			return (1);
+	return (0);
+}
+
+static int		ls_entry_strcmp(t_ls_entry *a, t_ls_entry *b)
 {
 	return (ft_strcmp(a->path, b->path));
 }
 
-static int	ls_entry_timecmp(t_ls_entry *a, t_ls_entry *b)
+static int		ls_entry_timecmp(t_ls_entry *a, t_ls_entry *b)
 {
 	int r;
 
@@ -26,7 +44,7 @@ static int	ls_entry_timecmp(t_ls_entry *a, t_ls_entry *b)
 }
 
 
-void		ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt)
+void			ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt)
 {
 	size_t		i;
 	size_t		j;

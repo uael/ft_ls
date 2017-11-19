@@ -27,7 +27,7 @@ OBJ = $(addprefix $(OBJ_PATH),$(LIBLS_OBJ_NAME)) \
 INC = $(addprefix -I,$(INC_PATH))
 
 LIBLS_OBJ_NAME = $(LIBLS_NAME:.c=.o)
-LIBLS_NAME = entry.c ls.c print.c sort.c
+LIBLS_NAME = entry.c ls.c print.c utils.c
 
 LS_OBJ_NAME = $(LS_NAME:.c=.o)
 LS_NAME = cli.c

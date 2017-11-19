@@ -12,22 +12,14 @@
 
 #include "ls.h"
 
-static uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c)
+static uint8_t	ls_err(char const *prg, char const *arg)
 {
-	while (*++s)
-		if ((*c = *s) == 'a')
-			*opt |= LS_DOTS;
-		else if (*s == 'l')
-			*opt |= LS_LONG;
-		else if (*s == 'R')
-			*opt |= LS_RECU;
-		else if (*s == 'r')
-			*opt |= LS_REVE;
-		else if (*s == 't')
-			*opt |= LS_ASCT;
-		else if (*s)
-			return (1);
-	return (0);
+	ft_puts(1, prg);
+	ft_puts(1, ": ");
+	ft_puts(1, arg);
+	ft_puts(1, ": ");
+	ft_putl(1, strerror(errno));
+	return (1);
 }
 
 inline uint8_t	ls_ctor(t_ls *self, int ac, char **av)
@@ -37,13 +29,11 @@ inline uint8_t	ls_ctor(t_ls *self, int ac, char **av)
 	char		c;
 
 	ft_memset(self, i = 0, sizeof(t_ls));
+	self->prg = ft_basename(av[0]);
 	ft_vec_ctor(&self->entries, sizeof(t_ls_entry));
 	while (++i < ac)
-		if (*av[i] != '-' && ls_entry_ctor(&ent, av[i], 1))
-			(void)(ft_puts(1, ft_basename(av[0])) &
-			ft_puts(1, ": cannot access '") &
-			ft_puts(1, av[i]) & ft_puts(1, "': ") &
-			ft_putl(1, strerror(errno)));
+		if (*av[i] != '-' && ls_entry_ctor(&ent, av[i]))
+			ls_err(self->prg, av[i]);
 		else if (*av[i] != '-' && !(ent.path = ft_strdup(ent.path)))
 			return (1);
 		else if (*av[i] != '-' && !ft_vec_pushc(&self->entries, &ent))
@@ -53,7 +43,7 @@ inline uint8_t	ls_ctor(t_ls *self, int ac, char **av)
 			ft_puts(1, ": illegal option -- ") & ft_putc(1, c) &
 			ft_puts(1, "\nusage: ") & ft_puts(1, ft_basename(av[0])) &
 			ft_putl(1, " [-Ralrt] [file ...]")) > 0));
-	if (!ft_vec_size(&self->entries) && (ls_entry_ctor(&ent, ft_strdup("."), 1)
+	if (!ft_vec_size(&self->entries) && (ls_entry_ctor(&ent, ft_strdup("."))
 		|| !ft_vec_pushc(&self->entries, &ent)))
 		return (1);
 	return (0);
@@ -71,13 +61,14 @@ static t_bool	ls_childs(t_ls *self, t_vec *v, t_ls_entry *ent, size_t i)
 	size_t			j;
 
 	v->len = 0;
-	ent->dir = ent->dir ? ent->dir : opendir(ent->path);
+	if (!(ent->dir = opendir(ent->path)))
+		return ((t_bool)!ls_err(self->prg, ft_basename(ent->path)));
 	j = 0;
 	while ((de = readdir(ent->dir)))
 	{
 		if (ft_isdots(de->d_name) && !(self->opt & LS_DOTS))
 			continue ;
-		if (ls_entry_ctor(&e, ft_pathjoin(ent->path, de->d_name), 0))
+		if (ls_entry_ctor(&e, ft_pathjoin(ent->path, de->d_name)))
 			continue ;
 		if ((self->opt & LS_RECU) && !ft_isdots(de->d_name) &&
 			S_ISDIR(e.stat.st_mode) && ++j)

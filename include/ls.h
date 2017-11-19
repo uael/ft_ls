@@ -17,13 +17,16 @@
 # include <errno.h>
 # include <grp.h>
 # include <libft.h>
+# include <limits.h>
 # include <pwd.h>
 # include <stdio.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/time.h>
 
 typedef	struct	s_ls
 {
+	char const	*prg;
 	uint8_t		opt;
 	t_vec		entries;
 	t_bool		errs;
@@ -49,7 +52,9 @@ extern uint8_t	ls_ctor(t_ls *self, int ac, char **av);
 extern void		ls_dtor(t_ls *self);
 extern void		ls_run(t_ls *self);
 
-extern uint8_t	ls_entry_ctor(t_ls_entry *self, char *path, t_bool root);
+extern uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c);
+
+extern uint8_t	ls_entry_ctor(t_ls_entry *self, char *path);
 extern void		ls_entry_dtor(t_ls_entry *self);
 extern void		ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt);
 extern void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt);

@@ -28,6 +28,20 @@ target_link_libraries(ls PUBLIC ft)
 add_executable(ft_ls ${ft_ls_SRC_DIR}/cli.c)
 target_link_libraries(ft_ls ls)
 
+target_compile_definitions(ls
+  PRIVATE $<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:NDEBUG>)
+if (MSVC)
+    target_compile_options(ls
+        PRIVATE /MT$<$<CONFIG:Debug>:d> /Oy /W3
+        PRIVATE /D_CRT_SECURE_NO_WARNINGS /Dinline=__inline
+        PRIVATE /O$<$<CONFIG:Debug>:d>$<$<CONFIG:Release>:x>)
+else ()
+    target_compile_options(ls
+        PRIVATE -Wall -Werror -Wextra -fomit-frame-pointer -ansi
+        PRIVATE -Wno-missing-field-initializers -Wno-missing-braces
+        PRIVATE -O$<$<CONFIG:Debug>:0 -g3>$<$<CONFIG:Release>:3>)
+endif ()
+
 target_compile_definitions(ft_ls
   PRIVATE $<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:NDEBUG>)
 if (MSVC)

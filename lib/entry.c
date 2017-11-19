@@ -12,12 +12,10 @@
 
 #include "ls.h"
 
-inline uint8_t	ls_entry_ctor(t_ls_entry *self, char *path, t_bool r)
+inline uint8_t	ls_entry_ctor(t_ls_entry *self, char *path)
 {
 	FT_INIT(self, t_ls_entry);
 	if (!path || lstat(path, &self->stat) < 0)
-		return (1);
-	else if (r && S_ISDIR(self->stat.st_mode) && !(self->dir = opendir(path)))
 		return (1);
 	self->path = path;
 	return (0);
@@ -73,14 +71,12 @@ inline void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt)
 		}
 	ls_entry_sort(self, n, opt);
 	if ((opt & LS_LONG) != (i = 0))
-		(void)(ft_puts(1, "total ") & ft_putn(1, s[0], 10) & ft_putc(1, '\n'));
+		(void)(ft_puts(1, "total ") & ft_putn(1, (int64_t)s[0], 10) &
+		ft_putc(1, '\n'));
 	while (i < n)
 	{
 		ls_ent_print1(self + i++, (uint8_t)s[1], opt);
-		if (opt & LS_LONG)
-			ft_putc(1, '\n');
-		else if (i < n)
-			ft_puts(1, "  ");
+		ft_putc(1, (char)((opt & LS_LONG) ? '\n' : ' '));
 	}
 	if (n && !(opt & LS_LONG))
 		ft_putc(1, '\n');
