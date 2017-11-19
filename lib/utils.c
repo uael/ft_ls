@@ -39,39 +39,42 @@ inline uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c)
 			*opt |= LS_REVE;
 		else if (*s == 't')
 			*opt |= LS_ASCT;
+		else if (*s == 'h')
+			*opt |= LS_UNIT;
+		else if (*s == '1')
+			*opt |= LS_LINE;
 		else if (*s)
 			return (1);
 	return (0);
 }
 
-static int		ls_entry_strcmp(t_ls_entry *a, t_ls_entry *b)
+static int64_t	ls_entry_strcmp(t_ls_entry *a, t_ls_entry *b)
 {
 	return (ft_strcmp(a->path, b->path));
 }
 
-static int		ls_entry_timecmp(t_ls_entry *a, t_ls_entry *b)
+static int64_t	ls_entry_timecmp(t_ls_entry *a, t_ls_entry *b, uint8_t opt)
 {
-	int r;
+	int64_t i;
 
-	r = -I64CMP(a->stat.st_ctime, b->stat.st_ctime);
-	return (r != 0 ? r : ls_entry_strcmp(a, b));
+	(void)opt;
+	i = I64CMP(b->stat.st_mtime, a->stat.st_mtime);
+	return (i != 0 ? i : ls_entry_strcmp(a, b));
 }
-
 
 void			ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt)
 {
 	size_t		i;
 	size_t		j;
-	int			c;
+	int64_t		c;
 	t_ls_entry	tmp;
 
-	(void) opt;
 	j = 0;
 	while (++j < n && (i = 0) == 0)
 		while (++i < n)
 		{
 			if ((opt & LS_ASCT) &&
-				(c = ls_entry_timecmp(self + i - 1, self + i)) == 0)
+				(c = ls_entry_timecmp(self + i - 1, self + i, opt)) == 0)
 				continue ;
 			if (!(opt & LS_ASCT) &&
 				(c = ls_entry_strcmp(self + i - 1, self + i)) == 0)

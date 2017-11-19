@@ -18,6 +18,8 @@ inline uint8_t	ls_entry_ctor(t_ls_entry *self, char *path)
 	if (!path || lstat(path, &self->stat) < 0)
 		return (1);
 	self->path = path;
+	self->usr = getpwuid(self->stat.st_uid);
+	self->grp = getgrgid(self->stat.st_gid);
 	return (0);
 }
 
@@ -49,7 +51,7 @@ static uint8_t	ls_entry_strsize(t_ls_entry *self)
 			i = ft_floatstr(self->strsz, f, 10, 10);
 		else
 			i = ft_intstr(self->strsz,
-						  (int64_t)f + (f - (int64_t)f >= 0.5 ? 1 : 0), 10);
+				(int64_t)f + (f - (int64_t)f >= 0.5 ? 1 : 0), 10);
 		self->strsz[i++] = unit;
 	}
 	self->strsz[i] = '\0';
@@ -66,10 +68,13 @@ static void		ls_ent_printone(t_ls_entry *self, uint8_t *pad, uint8_t opt)
 		ls_print_dtype(self->stat.st_mode);
 		ls_print_rights(self->stat.st_mode);
 		(void)(ft_putc(1, ' ') & ft_padnr(1, self->stat.st_nlink, 10, pad[0])
-			   & ft_putc(1, ' '));
+			& ft_putc(1, ' '));
 		ls_print_gps(self, pad + 1);
 		ft_putc(1, ' ');
-		ft_padr(1, self->strsz, pad[3]);
+		if (opt & LS_UNIT)
+			ft_padr(1, self->strsz, pad[3] + 1);
+		else
+			ft_padnr(1, self->stat.st_size, 10, pad[3]);
 		ls_print_about(&self->stat);
 	}
 	ft_puts(1, ft_basename(self->path));
@@ -79,10 +84,10 @@ static void		ls_ent_printone(t_ls_entry *self, uint8_t *pad, uint8_t opt)
 		if ((sz = readlink(self->path, cp, PATH_MAX)) > 0)
 			(void)((cp[sz] = '\0') & ft_puts(1, " -> ") & ft_puts(1, cp));
 	}
-	ft_putc(1, (char)((opt & LS_LONG) ? '\n' : ' '));
+	ft_putc(1, (char)((opt & LS_LONG) || (opt & LS_LINE) ? '\n' : ' '));
 }
 
-inline void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt)
+inline void		ls_entry_print(t_ls_entry *ent, size_t n, uint8_t opt)
 {
 	size_t		i;
 	uint8_t		p[4];
@@ -92,21 +97,20 @@ inline void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt)
 	if ((opt & LS_LONG) != (i = 0))
 		while (i < n)
 		{
-			t += (self + i)->stat.st_blocks;
-			p[0] = ft_u8max(p[0], ft_intlen((self + i)->stat.st_nlink, 10));
-			p[1] = ((self + i)->usr = getpwuid((self + i)->stat.st_uid))
-				? ft_u8max(p[1], (uint8_t)ft_strlen((self + i)->usr->pw_name))
-				: ft_u8max(p[1], ft_intlen(self->stat.st_uid, 10));
-			p[2] = ((self + i)->grp = getgrgid((self + i)->stat.st_gid))
-				? ft_u8max(p[1], (uint8_t)ft_strlen((self + i)->grp->gr_name))
-				: ft_u8max(p[1], ft_intlen(self->stat.st_gid, 10));
-			p[3] = ft_u8max(p[2], ls_entry_strsize(self + i++));
+			t += (ent + i)->stat.st_blocks;
+			p[0] = ft_u8max(p[0], ft_intlen((ent + i)->stat.st_nlink, 10));
+			p[1] = ft_u8max(p[1], (ent + i)->usr ? (uint8_t)ft_strlen(
+				(ent + i)->usr->pw_name) : ft_intlen(ent->stat.st_uid, 10));
+			p[2] = ft_u8max(p[1], (ent + i)->grp ? (uint8_t)ft_strlen(
+				(ent + i)->grp->gr_name) : ft_intlen(ent->stat.st_gid, 10));
+			p[3] = ft_u8max(p[3], (opt & LS_UNIT) ? ls_entry_strsize(ent + i++)
+				: ft_intlen((ent + i++)->stat.st_size, 10));
 		}
-	ls_entry_sort(self, n, opt);
-	if ((opt & LS_LONG) != (i = 0) && t > 0)
+	ls_entry_sort(ent, n, opt);
+	if ((opt & LS_LONG) != (i = 0) && n > 1)
 		(void)(ft_puts(1, "total ") & ft_putu(1, t, 10) & ft_putc(1, '\n'));
 	while (i < n)
-		ls_ent_printone(self + i++, (uint8_t *) p, opt);
-	if (n && !(opt & LS_LONG))
+		ls_ent_printone(ent + i++, (uint8_t *)p, opt);
+	if (n && !(opt & LS_LONG) && !(opt & LS_LINE))
 		ft_putc(1, '\n');
 }

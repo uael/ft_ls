@@ -62,6 +62,10 @@ function donorm {
     norm_file ${file} &
     pids="$pids $!"
   done
+  for file in ${PROJECT_PATH}/lib/*.c; do
+    norm_file ${file} &
+    pids="$pids $!"
+  done
   wait ${pids}
   out=$(cat ${NORM_OUT})
   if [[ ! -z ${out} ]]; then
@@ -77,18 +81,19 @@ function dotest {
   local test_expected="./test/$(basename "${test%.*}").ex"
   if [ ! -f ${test_expected} ]; then
     test_expected="./out/$(basename "${test%.*}").ex"
-    ls $(cat ${test}) > ${test_expected}
+    rm -f ${test_expected}
+    /bin/ls $(cat ${test}) > ${test_expected} 2>&1
   fi
+  rm -f ${test_out}
   ./${PROJECT_PATH}/ft_ls $(cat ${test}) > ${test_out} 2>&1
   diff ${test_out} ${test_expected}
 }
 
 mkdir -p out
-job "Make" "make all" "make -C${PROJECT_PATH} all"
+job "Make" "make all" "make -C${PROJECT_PATH}"
 for test in ./test/*.ls; do
   job "Test" "$(basename "${test%.*}")" "dotest ${test}"
 done
-job "Make" "make clean" "make -C${PROJECT_PATH} clean"
 job "Norm" "all" "donorm"
 
 rm ${OUT}

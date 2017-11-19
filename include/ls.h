@@ -28,7 +28,7 @@ typedef	struct	s_ls
 {
 	char const	*prg;
 	uint8_t		opt;
-	t_vec		entries;
+	t_vec		ents;
 	t_bool		errs;
 }				t_ls;
 
@@ -38,7 +38,9 @@ typedef enum	e_ls_opt
 	LS_LONG = 1 << 1,
 	LS_RECU = 1 << 2,
 	LS_REVE = 1 << 3,
-	LS_ASCT = 1 << 4
+	LS_ASCT = 1 << 4,
+	LS_UNIT = 1 << 5,
+	LS_LINE = 1 << 6,
 }				t_ls_opt;
 
 typedef struct	s_ls_entry
@@ -61,7 +63,7 @@ extern uint8_t	ls_opt_parse(uint8_t *opt, char *s, char *c);
 extern uint8_t	ls_entry_ctor(t_ls_entry *self, char *path);
 extern void		ls_entry_dtor(t_ls_entry *self);
 extern void		ls_entry_sort(t_ls_entry *self, size_t n, uint8_t opt);
-extern void		ls_entry_print(t_ls_entry *self, size_t n, uint8_t opt);
+extern void		ls_entry_print(t_ls_entry *ent, size_t n, uint8_t opt);
 
 extern void		ls_print_dtype(mode_t mode);
 extern void		ls_print_rights(mode_t mode);
