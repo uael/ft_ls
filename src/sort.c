@@ -34,8 +34,7 @@ uint8_t			ls_entry_sort(t_ls_entry *ent, size_t n, uint8_t opt, t_bool r)
 	t_bool		s;
 
 	j = 0;
-	s = 0;
-	while (++j < n && !s)
+	while (++j < n)
 	{
 		i = 0;
 		s = 0;
@@ -47,6 +46,8 @@ uint8_t			ls_entry_sort(t_ls_entry *ent, size_t n, uint8_t opt, t_bool r)
 				ent[i] = tmp;
 				s = 1;
 			}
+		if (!s)
+			break ;
 	}
 	return (0);
 }
