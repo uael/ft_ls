@@ -12,7 +12,7 @@
 
 #include "libft/math.h"
 
-inline uint64_t ft_pow(int64_t n, int16_t p)
+inline uint64_t	ft_pow(int64_t n, int16_t p)
 {
 	uint64_t	r;
 	int64_t		t;

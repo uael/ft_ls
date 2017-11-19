@@ -57,6 +57,7 @@ inline uint8_t	ls_ctor(t_ls *ls, int ac, char **a)
 inline void		ls_dtor(t_ls *self)
 {
 	ft_vec_dtor(&self->ent, (void (*)(void *)) ls_entry_dtor);
+	ft_vec_dtor(&self->errs, NULL);
 }
 
 static t_bool	ls_childs(t_ls *self, t_vec *v, t_ls_entry *ent, size_t i)
