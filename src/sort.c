@@ -12,8 +12,7 @@
 
 #include "ls.h"
 
-static t_bool	ls_entry_dtyswap(t_ls_entry *a, t_ls_entry *b, uint8_t o,
-	t_bool r)
+static t_bool	ls_entry_swap(t_ls_entry *a, t_ls_entry *b, uint8_t o, t_bool r)
 {
 	int64_t c;
 
@@ -39,7 +38,7 @@ uint8_t			ls_entry_sort(t_ls_entry *ent, size_t n, uint8_t opt, t_bool r)
 		i = 0;
 		s = 0;
 		while (++i < n)
-			if (ls_entry_dtyswap(ent + i - 1, ent + i, opt, r))
+			if (ls_entry_swap(ent + i - 1, ent + i, opt, r))
 			{
 				tmp = ent[i - 1];
 				ent[i - 1] = ent[i];
